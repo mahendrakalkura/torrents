@@ -1,0 +1,16 @@
+{{ define "title" }}
+    500 - Internal Server Error
+{{ end }}
+
+{{ define "content" }}
+    <h1>
+        <i class="fa fa-dot-circle-o"></i>
+        &nbsp;
+        {{ block "title" . }}{{ end }}
+    </h1>
+    <div class="alert alert-danger">
+        <i class="fa fa-exclamation-triangle"></i>
+        &nbsp;
+        ...coming soon...
+    </div>
+{{ end }}

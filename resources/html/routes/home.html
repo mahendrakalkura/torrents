@@ -1,0 +1,16 @@
+{{ define "title" }}
+    Home
+{{ end }}
+
+{{ define "content" }}
+    <h1>
+        <i class="fa fa-fw fa-home"></i>
+        &nbsp;
+        {{ block "title" . }}{{ end }}
+    </h1>
+    <div class="alert alert-success">
+        <i class="fa fa-check-circle"></i>
+        &nbsp;
+        ...coming soon...
+    </div>
+{{ end }}
