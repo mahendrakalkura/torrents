@@ -1,0 +1,27 @@
+{
+  "author": "Mahendra Kalkura",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "clean-css-cli": "^4.0.8",
+    "concat-cli": "^4.0.0",
+    "csslint": "^1.0.5",
+    "eslint": "^3.17.0",
+    "eslint-config-google": "^0.7.1",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.2.1",
+    "uglify-js": "^2.8.12"
+  },
+  "description": "...coming soon...",
+  "keywords": [
+    "torrents"
+  ],
+  "license": "ISC",
+  "main": "",
+  "name": "torrents",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mahendrakalkura/torrents"
+  },
+  "scripts": {},
+  "version": "1.0.0"
+}
