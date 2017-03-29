@@ -6,12 +6,17 @@ import (
 
 type container struct {
 	Gorilla containerGorilla `toml:"gorilla"`
+	Spiders containerSpiders `toml:"spiders"`
 	Others  containerOthers  `toml:"others"`
 }
 
 type containerGorilla struct {
 	Hostname string `toml:"hostname"`
 	Port     string `toml:"port"`
+}
+
+type containerSpiders struct {
+	URLs []string `toml:"urls"`
 }
 
 type containerOthers struct {

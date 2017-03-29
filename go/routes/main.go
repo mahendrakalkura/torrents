@@ -3,8 +3,6 @@ package routes
 import (
 	"log"
 	"net/http"
-	"strconv"
-	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
@@ -29,9 +27,9 @@ func init() {
 
 	Connection.HandleFunc("/favicon.ico", faviconIco)
 
-	Connection.HandleFunc("/websockets/", websockets)
 	Connection.HandleFunc("/404/", errors404).Methods("GET")
 	Connection.HandleFunc("/500/", errors500).Methods("GET")
+	Connection.HandleFunc("/items", items).Methods("GET")
 	Connection.HandleFunc("/", home).Methods("GET")
 
 	Connection.NotFoundHandler = http.HandlerFunc(errors404)
@@ -41,35 +39,6 @@ func init() {
 
 func faviconIco(responseWriter http.ResponseWriter, request *http.Request) {
 	http.ServeFile(responseWriter, request, "assets/icons/favicon.ico")
-}
-
-func websockets(responseWriter http.ResponseWriter, request *http.Request) {
-	connection, connectionErr := upgrader.Upgrade(responseWriter, request, nil)
-	if connectionErr != nil {
-		log.Println(connection)
-		return
-	}
-	defer connection.Close()
-	for {
-		messageType, messageBytes, messageErr := connection.ReadMessage()
-		if messageErr != nil {
-			log.Println(messageErr)
-			return
-		}
-		messageString := string(messageBytes)
-		if messageString == "start" {
-			for indexInt := 1; indexInt <= 100; indexInt++ {
-				indexString := strconv.Itoa(indexInt)
-				messageBytes := []byte(indexString)
-				err := connection.WriteMessage(messageType, messageBytes)
-				if err != nil {
-					log.Println(err)
-					return
-				}
-				time.Sleep(100 * time.Millisecond)
-			}
-		}
-	}
 }
 
 func errors404(responseWriter http.ResponseWriter, request *http.Request) {
@@ -92,6 +61,12 @@ func errors500(responseWriter http.ResponseWriter, request *http.Request) {
 	if err != nil {
 		log.Println(err)
 	}
+}
+
+func items(responseWriter http.ResponseWriter, request *http.Request) {
+	responseWriter.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	bytes := []byte("[]")
+	responseWriter.Write(bytes)
 }
 
 func home(responseWriter http.ResponseWriter, request *http.Request) {

@@ -28,8 +28,8 @@ func initAssets() {
 		"assets/compressed.min.js",
 	}
 	for _, file := range files {
-		stat, err := os.Stat(file)
-		if err != nil {
+		stat, statErr := os.Stat(file)
+		if statErr != nil {
 			log.Fatalln("views :: initAssets(...)")
 		}
 		modTime := stat.ModTime()
