@@ -193,7 +193,7 @@ p {
 .progress .progress-bar {
     color: #000;
     line-height: 29px;
-    padding: 0 25px 0 10px;
+    min-width: 25px;
 }
 
 .table {
