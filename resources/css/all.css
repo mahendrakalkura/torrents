@@ -185,6 +185,17 @@ p {
     margin-bottom: 30px;
 }
 
+.progress {
+    height: 29px;
+    margin-bottom: 30px;
+}
+
+.progress .progress-bar {
+    color: #000;
+    line-height: 29px;
+    padding: 0 25px 0 10px;
+}
+
 .table {
     margin-bottom: 30px;
 }
