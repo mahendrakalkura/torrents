@@ -1,19 +1,22 @@
-jQuery(function() {
-    var root = document.querySelector('#root');
+var root = document.querySelector('#root');
 
-    var component = m(
-        'div',
-        {
-            class: 'progress',
-        },
-        m(
-            'div', {
-                class: 'active progress-bar progress-bar-info progress-bar-striped',
-                style: 'widget: 0%',
+var component = {
+    view: function() {
+        var node = m(
+            'div',
+            {
+                class: 'progress',
             },
-            '0%'
-        )
-    );
+            m(
+                'div', {
+                    class: 'active progress-bar progress-bar-info progress-bar-striped',
+                    style: 'widget: 0%',
+                },
+                '0%'
+            )
+        );
+        return node;
+    },
+};
 
-    m.render(root, component);
-});
+m.mount(root, component);
