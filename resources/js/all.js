@@ -1,20 +1,32 @@
+var url = document.querySelector('body').getAttribute('data-url');
+
 var root = document.querySelector('#root');
+
+var oninit = function() {
+    var socket = new WebSocket('ws://' + url + '/websockets/');
+
+    socket.addEventListener('open', function(event) {
+        socket.send('start');
+    });
+
+    socket.addEventListener('close', function(event) {
+    });
+
+    socket.addEventListener('error', function(event) {
+    });
+
+    socket.addEventListener('message', function(event) {
+        component.progress = event.data;
+        m.redraw();
+        if (event.data === 100) {
+            socket.close();
+        }
+    });
+};
 
 var component = {
     progress: 0,
-    process: function() {
-        this.progress += 1;
-        m.redraw()
-        if (this.progress < 100) {
-            var that = this;
-            setTimeout(function() {
-                that.process();
-            }, 250);
-        }
-    },
-    oninit: function() {
-        this.process();
-    },
+    oninit: oninit,
     view: function() {
         return m(
             'div',
