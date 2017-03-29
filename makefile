@@ -77,6 +77,7 @@ build_js:
 		--files                                           \
 			./node_modules/jquery/dist/jquery.js          \
 			./node_modules/bootstrap/dist/js/bootstrap.js \
+			./node_modules/mithril/mithril.js             \
 			./resources/js/all.js                         \
 		--output ./assets/compressed.js > /dev/null
 	@./node_modules/.bin/uglifyjs --output=./assets/compressed.min.js ./assets/compressed.js
