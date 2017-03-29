@@ -27,6 +27,7 @@ func init() {
 	Connection.HandleFunc("/404/", errors404).Methods("GET")
 	Connection.HandleFunc("/500/", errors500).Methods("GET")
 	Connection.HandleFunc("/", home).Methods("GET")
+	Connection.HandleFunc("/", xhr).Methods("POST")
 
 	Connection.NotFoundHandler = http.HandlerFunc(errors404)
 }
@@ -65,4 +66,7 @@ func home(responseWriter http.ResponseWriter, request *http.Request) {
 	if err != nil {
 		log.Println(err)
 	}
+}
+
+func xhr(responseWriter http.ResponseWriter, request *http.Request) {
 }
