@@ -1,8 +1,22 @@
 var root = document.querySelector('#root');
 
 var component = {
+    progress: 0,
+    process: function() {
+        this.progress += 1;
+        m.redraw()
+        if (this.progress < 100) {
+            var that = this;
+            setTimeout(function() {
+                that.process();
+            }, 250);
+        }
+    },
+    oninit: function() {
+        this.process();
+    },
     view: function() {
-        var node = m(
+        return m(
             'div',
             {
                 class: 'progress',
@@ -10,12 +24,11 @@ var component = {
             m(
                 'div', {
                     class: 'active progress-bar progress-bar-info progress-bar-striped',
-                    style: 'widget: 0%',
+                    style: 'width: ' + this.progress + '%',
                 },
-                '0%'
+                '   ' + this.progress + '%   '
             )
         );
-        return node;
     },
 };
 
