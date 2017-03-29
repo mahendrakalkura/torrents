@@ -38,7 +38,6 @@ func faviconIco(responseWriter http.ResponseWriter, request *http.Request) {
 func errors404(responseWriter http.ResponseWriter, request *http.Request) {
 	responseWriter.WriteHeader(http.StatusNotFound)
 	data := map[string]interface{}{
-		"route":    "errors404",
 		"settings": settings.Container,
 	}
 	err := views.Templates["resources/html/routes/404.html"].Execute(responseWriter, data)
@@ -50,7 +49,6 @@ func errors404(responseWriter http.ResponseWriter, request *http.Request) {
 func errors500(responseWriter http.ResponseWriter, request *http.Request) {
 	responseWriter.WriteHeader(http.StatusInternalServerError)
 	data := map[string]interface{}{
-		"route":    "errors500",
 		"settings": settings.Container,
 	}
 	err := views.Templates["resources/html/routes/500.html"].Execute(responseWriter, data)
@@ -61,7 +59,6 @@ func errors500(responseWriter http.ResponseWriter, request *http.Request) {
 
 func home(responseWriter http.ResponseWriter, request *http.Request) {
 	data := map[string]interface{}{
-		"route":    "home",
 		"settings": settings.Container,
 	}
 	err := views.Templates["resources/html/routes/home.html"].Execute(responseWriter, data)
