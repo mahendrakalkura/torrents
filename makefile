@@ -14,13 +14,12 @@ SHELL:=/bin/bash
 .PHONY: build_css
 .PHONY: build_js
 .PHONY: build_go
-.PHONY: bootstrap
-.PHONY: populate
-.PHONY: serve
 .PHONY: watch
 .PHONY: watch_css
 .PHONY: watch_js
 .PHONY: watch_go
+.PHONY: query
+.PHONY: serve
 
 clean:
 	@$(MAKE) --jobs=3 clean_css clean_go clean_js
@@ -93,6 +92,11 @@ watch_go:
 
 watch_js:
 	@${GOPATH}/bin/reflex --regex=resources/js/.* $(MAKE) build_js
+
+query:
+	@/usr/bin/pkill ./torrents || true
+	@/usr/bin/go build
+	@./torrents --action=query
 
 serve:
 	@/usr/bin/pkill ./torrents || true
