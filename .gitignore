@@ -5,3 +5,4 @@ assets/compressed.min.js
 node_modules
 settings.toml
 torrents
+torrents.json
