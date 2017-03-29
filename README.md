@@ -15,5 +15,6 @@ How to run?
 
 ```
 $ cd torrents
-$ make watch
+$ make query
+$ make serve
 ```
