@@ -27,40 +27,34 @@
         </head>
         <body data-url="{{ $.settings.Others.URL }}">
             <nav class="navbar navbar-inverse">
-                <div class="container">
-                    <div class="navbar-header">
-                        <button
-                            class="navbar-toggle"
-                            data-target="#navbar-collapse"
-                            data-toggle="collapse"
-                            type="button"
-                            >
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="{{ $.settings.Others.URL }}/">Torrents</a>
-                    </div>
+                <div class="navbar-header">
+                    <button
+                        class="navbar-toggle"
+                        data-target="#navbar-collapse"
+                        data-toggle="collapse"
+                        type="button"
+                        >
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{{ $.settings.Others.URL }}/">Torrents</a>
                 </div>
             </nav>
-            <div class="container">
-                {{ template "content" . }}
-            </div>
-            <div class="container">
-                <hr>
-                <footer>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <p>
-                                Copyright &copy; 2017
-                                &middot;
-                                Torrents
-                            </p>
-                        </div>
+            {{ template "content" . }}
+            <hr>
+            <footer>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p>
+                            Copyright &copy; 2017
+                            &middot;
+                            Torrents
+                        </p>
                     </div>
-                </footer>
-            </div>
+                </div>
+            </footer>
             <script
                 {{ if eq $.settings.Others.Environment "development" }}
                     src="{{ $.settings.Others.URL }}/{{ assets "assets/compressed.js" }}"
