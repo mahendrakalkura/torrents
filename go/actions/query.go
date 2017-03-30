@@ -48,7 +48,7 @@ func (items Items) Less(one, two int) bool {
 	if items[one].Category > items[two].Category {
 		return false
 	}
-	return items[one].Seeds < items[two].Seeds
+	return items[one].Seeds > items[two].Seeds
 }
 
 func exists(items Items, message Item) bool {
@@ -78,7 +78,7 @@ func consumer(waitGroup *sync.WaitGroup, count int, outgoing chan string, incomi
 			break
 		}
 	}
-	sort.Sort(Items(items))
+	sort.Sort(items)
 	marshal, marshalErr := json.Marshal(items)
 	if marshalErr != nil {
 		log.Fatalln(marshalErr)
