@@ -153,6 +153,10 @@ a {
     cursor: pointer;
 }
 
+body {
+    padding: 0 30px;
+}
+
 footer {
     text-align: right;
 }
@@ -175,9 +179,8 @@ p {
     margin-bottom: 30px;
 }
 
-.container {
-    padding-left: 30px;
-    padding-right: 30px;
+.block {
+    display: block;
 }
 
 .navbar {
@@ -185,17 +188,16 @@ p {
     margin-bottom: 30px;
 }
 
-.progress {
-    height: 29px;
-    margin-bottom: 30px;
-}
-
-.progress .progress-bar {
-    color: #000;
-    line-height: 29px;
-    min-width: 25px;
+.navbar .navbar-header .navbar-brand {
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 .table {
     margin-bottom: 30px;
+}
+
+.table tbody tr .text-narrow {
+    white-space: nowrap;
+    width: 1px;
 }
