@@ -18,16 +18,18 @@ import (
 	"github.com/lestrrat/go-libxml2"
 	"github.com/lestrrat/go-libxml2/types"
 	"github.com/mahendrakalkura/torrents/go/settings"
+	"github.com/mvdan/xurls"
+	"github.com/xtgo/set"
 )
 
 // Item ...
 type Item struct {
-	Category string
-	Title    string
-	URL      string
-	Seeds    int
-	URLs     []string
-	Magnet   string
+	Category string   `json:"category"`
+	Seeds    int      `json:"seeds"`
+	URL      string   `json:"url"`
+	Title    string   `json:"title"`
+	URLs     []string `json:"urls"`
+	Magnet   string   `json:"magnet"`
 }
 
 // Items ...
@@ -115,14 +117,18 @@ func getCategory(node types.Node) string {
 	return trimSpace
 }
 
-func getTitle(node types.Node) string {
-	xPath, xPathErr := node.Find(`.//div/a/text()`)
+func getSeeds(node types.Node) int {
+	xPath, xPathErr := node.Find(`.//text()`)
 	if xPathErr != nil {
-		return ""
+		return 0
 	}
-	title := xPath.String()
+	text := xPath.String()
 	xPath.Free()
-	return title
+	seeds, seedsErr := strconv.Atoi(text)
+	if seedsErr != nil {
+		return 0
+	}
+	return seeds
 }
 
 func getURL(baseURL string, node types.Node) string {
@@ -140,51 +146,44 @@ func getURL(baseURL string, node types.Node) string {
 	return url
 }
 
-func getSeeds(node types.Node) int {
-	xPath, xPathErr := node.Find(`.//text()`)
+func getTitle(node types.Node) string {
+	xPath, xPathErr := node.Find(`.//div/a/text()`)
 	if xPathErr != nil {
-		return 0
+		return ""
+	}
+	title := xPath.String()
+	xPath.Free()
+	return title
+}
+
+func getURLsA(document types.Document) []string {
+	xPath, xPathErr := document.Find(`//div[@class="nfo"]/pre`)
+	if xPathErr != nil {
+		return []string{}
 	}
 	text := xPath.String()
 	xPath.Free()
-	seeds, seedsErr := strconv.Atoi(text)
-	if seedsErr != nil {
-		return 0
-	}
-	return seeds
+	urls := xurls.Strict.FindAllString(text, -1)
+	return urls
 }
 
-func getURLs(document types.Document) []string {
+func getURLsB(document types.Document) []string {
+	xPath, xPathErr := document.Find(`//a`)
+	if xPathErr != nil {
+		return []string{}
+	}
 	urls := []string{}
-
-	aXPath, aXPathErr := document.Find(`//div[@class="nfo"]/pre/a`)
-	if aXPathErr != nil {
-		return urls
-	}
-	aNodes := aXPath.NodeList()
-	aXPath.Free()
-	for _, aNode := range aNodes {
-		xPath, xPathErr := aNode.Find(`.//@href`)
+	bodes := xPath.NodeList()
+	for _, bode := range bodes {
+		xPath, xPathErr := bode.Find(`.//@href`)
 		if xPathErr != nil {
 			continue
 		}
 		text := xPath.String()
 		xPath.Free()
-		urls = append(urls, text)
-	}
-
-	bXPath, bXPathErr := document.Find(`//a`)
-	if bXPathErr != nil {
-		return urls
-	}
-	bNodes := bXPath.NodeList()
-	for _, bNode := range bNodes {
-		xPath, xPathErr := bNode.Find(`.//@href`)
-		if xPathErr != nil {
+		if !strings.HasPrefix(text, "http") {
 			continue
 		}
-		text := xPath.String()
-		xPath.Free()
 		parse, parseErr := url.Parse(text)
 		if parseErr != nil {
 			continue
@@ -194,9 +193,16 @@ func getURLs(document types.Document) []string {
 		}
 		urls = append(urls, text)
 	}
+	return urls
+}
 
-	sort.Strings(urls)
-
+func getURLs(document types.Document) []string {
+	urls := []string{}
+	urlsA := getURLsA(document)
+	urls = append(urls, urlsA...)
+	urlsB := getURLsB(document)
+	urls = append(urls, urlsB...)
+	urls = set.Strings(urls)
 	return urls
 }
 
@@ -278,17 +284,17 @@ func getItems(url string) (Items, error) {
 
 		category := getCategory(tdNodes[0])
 
-		title := getTitle(tdNodes[1])
+		seeds := getSeeds(tdNodes[2])
+		if seeds < 100 {
+			continue
+		}
 
 		url := getURL(url, tdNodes[1])
 		if url == "" {
 			continue
 		}
 
-		seeds := getSeeds(tdNodes[2])
-		if seeds < 100 {
-			continue
-		}
+		title := getTitle(tdNodes[1])
 
 		urls, magnet, err := getURLsAndMagnet(url)
 		if err != nil {
