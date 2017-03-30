@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -29,7 +30,7 @@ func init() {
 
 	Connection.HandleFunc("/404/", errors404).Methods("GET")
 	Connection.HandleFunc("/500/", errors500).Methods("GET")
-	Connection.HandleFunc("/items", items).Methods("GET")
+	Connection.HandleFunc("/items/", items).Methods("GET")
 	Connection.HandleFunc("/", home).Methods("GET")
 
 	Connection.NotFoundHandler = http.HandlerFunc(errors404)
@@ -66,6 +67,11 @@ func errors500(responseWriter http.ResponseWriter, request *http.Request) {
 func items(responseWriter http.ResponseWriter, request *http.Request) {
 	responseWriter.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	bytes := []byte("[]")
+	bytes, bytesErr := ioutil.ReadFile("torrents.json")
+	if bytesErr != nil {
+		responseWriter.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 	responseWriter.Write(bytes)
 }
 
