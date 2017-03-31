@@ -40,25 +40,27 @@ var component = {
                 'table',
                 {class: 'table table-bordered table-hover table-striped'},
                 m('tbody', {}, component.items.map(function(item) {
-                    return [
-                        m(
-                            'tr',
-                            {},
-                            [
-                                m('td', {class: 'text-narrow'}, item.category),
-                                m('td', {class: 'text-narrow text-right'}, item.seeds),
-                                m('td', {}, m('a', {href: item.url}, item.title)),
-                                m('td', {class: 'text-narrow text-center'}, m('a', {href: item.magnet}, 'Magnet')),
-                            ]
-                        ),
-                        m(
+                    var trs = [];
+                    trs.push(m(
+                        'tr',
+                        {},
+                        [
+                            m('td', {class: 'text-narrow'}, item.category),
+                            m('td', {class: 'text-narrow text-right'}, item.seeds),
+                            m('td', {}, m('a', {href: item.url}, item.title)),
+                            m('td', {class: 'text-narrow text-center'}, m('a', {href: item.magnet}, 'Magnet')),
+                        ]
+                    ));
+                    if (item.urls.length > 0) {
+                        trs.push(m(
                             'tr',
                             {},
                             m('td', {colspan: 4}, item.urls.map(function(url) {
                                 return m('a', {class: 'block', href: url}, url);
                             }))
-                        ),
-                    ];
+                        ));
+                    }
+                    return trs;
                 })
             ));
         }
