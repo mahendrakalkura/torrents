@@ -24,13 +24,13 @@ import (
 
 // Item ...
 type Item struct {
-	Category  string     `json:"category"`
-	Timestamp *time.Time `json:"timestamp"`
-	Seeds     int        `json:"seeds"`
-	URL       string     `json:"url"`
-	Title     string     `json:"title"`
-	URLs      []string   `json:"urls"`
-	Magnet    string     `json:"magnet"`
+	Category  string   `json:"category"`
+	Timestamp string   `json:"timestamp"`
+	Seeds     int      `json:"seeds"`
+	URL       string   `json:"url"`
+	Title     string   `json:"title"`
+	URLs      []string `json:"urls"`
+	Magnet    string   `json:"magnet"`
 }
 
 // Items ...
@@ -51,10 +51,10 @@ func (items Items) Less(one, two int) bool {
 	if items[one].Category > items[two].Category {
 		return false
 	}
-	if items[one].Timestamp.Before(*items[two].Timestamp) {
+	if items[one].Timestamp < items[two].Timestamp {
 		return true
 	}
-	if items[one].Timestamp.After(*items[two].Timestamp) {
+	if items[one].Timestamp > items[two].Timestamp {
 		return false
 	}
 	return items[one].Seeds > items[two].Seeds
@@ -203,20 +203,15 @@ func getURLsB(document types.Document) []string {
 	return urls
 }
 
-func getTimestamp(document types.Document) *time.Time {
+func getTimestamp(document types.Document) string {
 	xPath, xPathErr := document.Find(`//dt[contains(text(), "Uploaded:")]/following-sibling::dd/text()`)
 	if xPathErr != nil {
-		now := time.Now()
-		return &now
+		return "0000-00-00 00:00:00"
 	}
-	timestamp := xPath.String()
+	timestampString := xPath.String()
 	xPath.Free()
-	parse, parseErr := time.Parse("2006-01-02 15:04:05 MST", timestamp)
-	if parseErr != nil {
-		now := time.Now()
-		return &now
-	}
-	return &parse
+	timestampSubstring := timestampString[0:19]
+	return timestampSubstring
 }
 
 func getURLs(document types.Document) []string {
@@ -239,7 +234,7 @@ func getMagnet(document types.Document) string {
 	return magnet
 }
 
-func getTimestampAndURLsAndMagnet(url string) (*time.Time, []string, string, error) {
+func getTimestampAndURLsAndMagnet(url string) (string, []string, string, error) {
 	timeout := time.Duration(15 * time.Second)
 
 	client := http.Client{
@@ -248,16 +243,14 @@ func getTimestampAndURLsAndMagnet(url string) (*time.Time, []string, string, err
 
 	response, responseError := client.Get(url)
 	if responseError != nil {
-		now := time.Now()
-		return &now, []string{}, "", errors.New("#1")
+		return "", []string{}, "", errors.New("#1")
 	}
 
 	defer response.Body.Close()
 
 	document, documentErr := libxml2.ParseHTMLReader(response.Body)
 	if documentErr != nil {
-		now := time.Now()
-		return &now, []string{}, "", errors.New("#2")
+		return "", []string{}, "", errors.New("#2")
 	}
 
 	timestamp := getTimestamp(document)
