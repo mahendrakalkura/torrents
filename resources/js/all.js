@@ -45,9 +45,10 @@ var component = {
                         'tr',
                         {},
                         [
-                            m('td', {class: 'text-narrow'}, item.category),
-                            m('td', {class: 'text-narrow text-right'}, item.seeds),
                             m('td', {}, m('a', {href: item.url}, item.title)),
+                            m('td', {class: 'text-narrow'}, item.category),
+                            m('td', {class: 'text-narrow'}, item.timestamp),
+                            m('td', {class: 'text-narrow text-right'}, item.seeds),
                             m('td', {class: 'text-narrow text-center'}, m('a', {href: item.magnet}, 'Magnet')),
                         ]
                     ));
@@ -55,7 +56,7 @@ var component = {
                         trs.push(m(
                             'tr',
                             {},
-                            m('td', {colspan: 4}, item.urls.map(function(url) {
+                            m('td', {colspan: 5}, item.urls.map(function(url) {
                                 return m('a', {class: 'block', href: url}, url);
                             }))
                         ));
