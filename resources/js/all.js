@@ -7,21 +7,22 @@ var oninit = function() {
     component.isLoading = true;
     component.isSuccess = false;
     component.isFailure = false;
-    m.request({method: 'GET', url: url + '/items/'})
-    .then(
-        function(items) {
-            component.items = items;
-            component.isLoading = false;
-            component.isSuccess = true;
-            component.isFailure = false;
-        },
-        function() {
-            component.items = [];
-            component.isLoading = false;
-            component.isSuccess = false;
-            component.isFailure = true;
-        }
-    )
+    m
+        .request({method: 'GET', url: url + '/items/'})
+        .then(
+            function(items) {
+                component.items = items;
+                component.isLoading = false;
+                component.isSuccess = true;
+                component.isFailure = false;
+            },
+            function() {
+                component.items = [];
+                component.isLoading = false;
+                component.isSuccess = false;
+                component.isFailure = true;
+            }
+        );
 };
 
 var component = {
