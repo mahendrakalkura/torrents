@@ -210,7 +210,7 @@ func getTimestamp(document types.Document) string {
 	}
 	timestampString := xPath.String()
 	xPath.Free()
-	timestampSubstring := timestampString[0:19]
+	timestampSubstring := timestampString[0:18]
 	return timestampSubstring
 }
 
