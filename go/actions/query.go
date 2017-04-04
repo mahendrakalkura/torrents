@@ -208,10 +208,12 @@ func getTimestamp(document types.Document) string {
 	if xPathErr != nil {
 		return "0000-00-00 00:00:00"
 	}
-	timestampString := xPath.String()
+	timestamp := xPath.String()
 	xPath.Free()
-	timestampSubstring := timestampString[0:18]
-	return timestampSubstring
+	if len(timestamp) >= 18 {
+		timestamp = timestamp[0:18]
+	}
+	return timestamp
 }
 
 func getURLs(document types.Document) []string {
