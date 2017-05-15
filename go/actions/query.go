@@ -45,16 +45,16 @@ func (items Items) Swap(one, two int) {
 }
 
 func (items Items) Less(one, two int) bool {
-	if items[one].Category < items[two].Category {
-		return true
-	}
-	if items[one].Category > items[two].Category {
-		return false
-	}
 	if items[one].Timestamp > items[two].Timestamp {
 		return true
 	}
 	if items[one].Timestamp < items[two].Timestamp {
+		return false
+	}
+	if items[one].Category < items[two].Category {
+		return true
+	}
+	if items[one].Category > items[two].Category {
 		return false
 	}
 	return items[one].Seeds > items[two].Seeds
