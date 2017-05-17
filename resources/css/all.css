@@ -183,6 +183,10 @@ p {
     display: block;
 }
 
+.btn-group {
+    margin-bottom: 30px;
+}
+
 .navbar {
     border-radius: 0;
     margin-bottom: 30px;
